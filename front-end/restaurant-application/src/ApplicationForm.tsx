@@ -2,8 +2,9 @@ import { Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { MoreHoriz } from '@material-ui/icons';
+import btoa from 'btoa';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import SteinStore from 'stein-js-client';
 import styled from 'styled-components';
 import * as Yup from 'yup';
@@ -23,10 +24,15 @@ const StyledButton = styled(Button)`
 `;
 
 interface Values {
+  storeId: string;
   lastName: string;
   firstName: string;
   email: string;
   restaurantName: string;
+  state: string;
+  city: string;
+  street: string;
+  building: string;
 }
 
 interface Props {
@@ -34,22 +40,60 @@ interface Props {
 }
 
 const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
+  useEffect(() => {
+    const token = btoa(
+      `${process.env.REACT_APP_SHOPIFY_API_KEY}:${process.env.REACT_APP_SHOPIFY_API_TOKEN}`,
+    );
+    fetch(`https://bentogo.myshopify.com/admin/api/2020-04/shop.json`, {
+      mode: 'no-cors',
+      method: 'GET',
+      headers: {
+        method: 'get',
+        'access-control-allow-origin': '*',
+        contentType: 'application/json',
+        Authorization: `Basic ${token}`,
+      },
+    }).then((response) => console.log({ response }));
+  }, []);
+
   const formik = useFormik<Values>({
     initialValues: {
+      storeId: '',
       lastName: '',
       firstName: '',
       email: '',
       restaurantName: '',
+      state: '',
+      city: '',
+      street: '',
+      building: '',
     },
     validationSchema: Yup.object({
+      storeId: Yup.string().required('Store Id is required'),
       firstName: Yup.string().required('First name is required'),
       lastName: Yup.string().required('Last name is required'),
       email: Yup.string()
         .email('Invalid email address')
         .required('Email is required'),
       restaurantName: Yup.string().required('Restaurant name is required'),
+      state: Yup.string().required('State is required'),
+      city: Yup.string().required('City is required'),
+      street: Yup.string().required('Street name is required'),
+      building: Yup.string(),
     }),
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
+      const res = await fetch(`https://${values.storeId}.myshopify.com/.com/`, {
+        mode: 'no-cors',
+        method: 'GET',
+        headers: {
+          'access-control-allow-origin': '*',
+          'Content-Type': 'html/text',
+        },
+      });
+      console.log({ ...values, ...res });
+      console.log(res?.text());
+      return;
+
       const store = new SteinStore(
         `https://api.steinhq.com/v1/storages/${process.env.REACT_APP_STEIN_ID}`,
       );
@@ -59,6 +103,7 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
           'account',
           [
             {
+              storeId: values.storeId,
               userName: `${values.firstName} ${values.lastName}`,
               emailAddress: values.email,
               storeName: values.restaurantName,
@@ -91,6 +136,16 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
     <form onSubmit={handleSubmit}>
       <Box display="flex" justifyContent="center">
         <Box width="50%" minWidth="300px" marginTop="8px">
+          <StyledTextField
+            id="storeId"
+            name="storeId"
+            label={touched.storeId ? errors.storeId : 'Store Id'}
+            onChange={handleChange}
+            value={values.storeId}
+            error={touched.storeId && !!errors.storeId}
+            fullWidth
+          />
+
           <StyledTextField
             id="email"
             name="email"
@@ -133,6 +188,48 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
             onChange={handleChange}
             value={values.restaurantName}
             error={touched.restaurantName && !!errors.restaurantName}
+            fullWidth
+          />
+
+          <Box display="flex" flexDirection="row">
+            <StyledTextField
+              id="state"
+              name="state"
+              label={touched.state ? errors.state : 'State'}
+              onChange={handleChange}
+              value={values.state}
+              error={touched.state && !!errors.state}
+              fullWidth
+            />
+            <Box width={16} />
+            <StyledTextField
+              id="city"
+              name="city"
+              label={touched.city ? errors.city : 'City'}
+              onChange={handleChange}
+              value={values.city}
+              error={touched.city && !!errors.city}
+              fullWidth
+            />
+          </Box>
+
+          <StyledTextField
+            id="street"
+            name="street"
+            label={touched.street ? errors.street : 'Street'}
+            onChange={handleChange}
+            value={values.street}
+            error={touched.street && !!errors.street}
+            fullWidth
+          />
+
+          <StyledTextField
+            id="building"
+            name="building"
+            label={touched.building ? errors.building : 'Building'}
+            onChange={handleChange}
+            value={values.building}
+            error={touched.building && !!errors.building}
             fullWidth
           />
 
