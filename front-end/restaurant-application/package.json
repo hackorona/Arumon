@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@types/yup": "^0.26.34",
     "prettier": "^2.0.2",
     "reactotron-react-js": "^3.3.7"
   }
