@@ -1,8 +1,10 @@
 import { Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { MoreHoriz } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import React from 'react';
+import SteinStore from 'stein-js-client';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 
@@ -27,7 +29,11 @@ interface Values {
   restaurantName: string;
 }
 
-const ApplicationForm: React.FunctionComponent = () => {
+interface Props {
+  onSuccess?: () => void;
+}
+
+const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
   const formik = useFormik<Values>({
     initialValues: {
       lastName: '',
@@ -43,12 +49,43 @@ const ApplicationForm: React.FunctionComponent = () => {
         .required('Email is required'),
       restaurantName: Yup.string().required('Restaurant name is required'),
     }),
-    onSubmit: (values) => {
-      console.log({ values });
+    onSubmit: (values, { setSubmitting }) => {
+      const store = new SteinStore(
+        `https://api.steinhq.com/v1/storages/${process.env.REACT_APP_STEIN_ID}`,
+      );
+
+      store
+        .append(
+          'account',
+          [
+            {
+              userName: `${values.lastName} ${values.firstName}`,
+              emailAddress: values.email,
+              storeName: values.restaurantName,
+            },
+          ],
+          {
+            authentication: {
+              username: process.env.REACT_APP_STEIN_USERNAME,
+              password: process.env.REACT_APP_STEIN_PASSWORD,
+            },
+          },
+        )
+        .then((_res) => {
+          setSubmitting(false);
+          onSuccess();
+        });
     },
   });
 
-  const { values, touched, errors, handleSubmit, handleChange } = formik;
+  const {
+    values,
+    touched,
+    errors,
+    isSubmitting,
+    handleSubmit,
+    handleChange,
+  } = formik;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -100,8 +137,13 @@ const ApplicationForm: React.FunctionComponent = () => {
           />
 
           <Box marginY="8px">
-            <StyledButton type="submit" color="primary" fullWidth>
-              Submit
+            <StyledButton
+              type="submit"
+              color="primary"
+              disabled={isSubmitting}
+              fullWidth
+            >
+              {isSubmitting ? <MoreHoriz /> : 'Submit'}
             </StyledButton>
           </Box>
         </Box>
