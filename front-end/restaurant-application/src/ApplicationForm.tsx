@@ -49,50 +49,52 @@ const ApplicationForm: React.FunctionComponent = () => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Box width="50%" marginTop="8px">
-        <StyledTextField
-          id="email"
-          name="email"
-          label="Email"
-          type="email"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-          fullWidth
-        />
-
-        <Box display="flex" flexDirection="row">
+      <Box display="flex" justifyContent="center">
+        <Box width="50%" marginTop="8px">
           <StyledTextField
-            id="lastName"
-            name="lastName"
-            label="Last Name"
+            id="email"
+            name="email"
+            label="Email"
+            type="email"
             onChange={formik.handleChange}
-            value={formik.values.lastName}
+            value={formik.values.email}
             fullWidth
           />
-          <Box width={16} />
+
+          <Box display="flex" flexDirection="row">
+            <StyledTextField
+              id="lastName"
+              name="lastName"
+              label="Last Name"
+              onChange={formik.handleChange}
+              value={formik.values.lastName}
+              fullWidth
+            />
+            <Box width={16} />
+            <StyledTextField
+              id="firstName"
+              name="firstName"
+              label="First Name"
+              onChange={formik.handleChange}
+              value={formik.values.firstName}
+              fullWidth
+            />
+          </Box>
+
           <StyledTextField
-            id="firstName"
-            name="firstName"
-            label="First Name"
+            id="restaurantName"
+            name="restaurantName"
+            label="Restaurant Name"
             onChange={formik.handleChange}
-            value={formik.values.firstName}
+            value={formik.values.restaurantName}
             fullWidth
           />
-        </Box>
 
-        <StyledTextField
-          id="restaurantName"
-          name="restaurantName"
-          label="Restaurant Name"
-          onChange={formik.handleChange}
-          value={formik.values.restaurantName}
-          fullWidth
-        />
-
-        <Box marginY="8px">
-          <StyledButton type="submit" color="primary" fullWidth>
-            Submit
-          </StyledButton>
+          <Box marginY="8px">
+            <StyledButton type="submit" color="primary" fullWidth>
+              Submit
+            </StyledButton>
+          </Box>
         </Box>
       </Box>
     </form>
