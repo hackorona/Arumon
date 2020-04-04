@@ -8,10 +8,10 @@ const App: React.FunctionComponent = () => {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <div>
-          <ApplicationForm />
-        </div>
       </header>
+      <div>
+        <ApplicationForm />
+      </div>
     </div>
   );
 };
