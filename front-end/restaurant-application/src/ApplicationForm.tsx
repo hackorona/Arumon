@@ -2,7 +2,6 @@ import { Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { MoreHoriz } from '@material-ui/icons';
-import btoa from 'btoa';
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
 import SteinStore from 'stein-js-client';
@@ -29,6 +28,7 @@ interface Values {
   firstName: string;
   email: string;
   restaurantName: string;
+  zipCode: string;
   state: string;
   city: string;
   street: string;
@@ -41,21 +41,10 @@ interface Props {
 
 const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
   useEffect(() => {
-    const token = btoa(
-      `${process.env.REACT_APP_SHOPIFY_API_KEY}:${process.env.REACT_APP_SHOPIFY_API_TOKEN}`,
+    fetch(`http://localhost:3000/domain-checker`).then((res) =>
+      console.log({ res }),
     );
-    fetch(`https://bentogo.myshopify.com/admin/api/2020-04/shop.json`, {
-      mode: 'no-cors',
-      method: 'GET',
-      headers: {
-        method: 'get',
-        'access-control-allow-origin': '*',
-        contentType: 'application/json',
-        Authorization: `Basic ${token}`,
-      },
-    }).then((response) => console.log({ response }));
   }, []);
-
   const formik = useFormik<Values>({
     initialValues: {
       storeId: '',
@@ -63,6 +52,7 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
       firstName: '',
       email: '',
       restaurantName: '',
+      zipCode: '',
       state: '',
       city: '',
       street: '',
@@ -76,6 +66,9 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
         .email('Invalid email address')
         .required('Email is required'),
       restaurantName: Yup.string().required('Restaurant name is required'),
+      zipCode: Yup.string()
+        .length(7, 'Zip Code must be 7 digits')
+        .required('Zip Code is required'),
       state: Yup.string().required('State is required'),
       city: Yup.string().required('City is required'),
       street: Yup.string().required('Street name is required'),
@@ -188,6 +181,16 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
             onChange={handleChange}
             value={values.restaurantName}
             error={touched.restaurantName && !!errors.restaurantName}
+            fullWidth
+          />
+
+          <StyledTextField
+            id="zipCode"
+            name="zipCode"
+            label={touched.zipCode ? errors.zipCode : 'Zip Code'}
+            onChange={handleChange}
+            value={values.zipCode}
+            error={touched.zipCode && !!errors.zipCode}
             fullWidth
           />
 
