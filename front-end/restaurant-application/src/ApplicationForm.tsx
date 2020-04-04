@@ -1,6 +1,7 @@
 import { Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { MoreHoriz } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import React from 'react';
 import SteinStore from 'stein-js-client';
@@ -28,7 +29,11 @@ interface Values {
   restaurantName: string;
 }
 
-const ApplicationForm: React.FunctionComponent = () => {
+interface Props {
+  onSuccess?: () => void;
+}
+
+const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
   const formik = useFormik<Values>({
     initialValues: {
       lastName: '',
@@ -68,6 +73,7 @@ const ApplicationForm: React.FunctionComponent = () => {
         )
         .then((_res) => {
           setSubmitting(false);
+          onSuccess();
         });
     },
   });
@@ -137,7 +143,7 @@ const ApplicationForm: React.FunctionComponent = () => {
               disabled={isSubmitting}
               fullWidth
             >
-              Submit
+              {isSubmitting ? <MoreHoriz /> : 'Submit'}
             </StyledButton>
           </Box>
         </Box>
