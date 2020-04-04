@@ -17,6 +17,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "stein-js-client": "^0.0.2",
     "styled-components": "^5.0.1",
     "typescript": "~3.7.2",
     "yup": "^0.28.3"
