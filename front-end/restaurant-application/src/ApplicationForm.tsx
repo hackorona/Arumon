@@ -90,7 +90,7 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Box display="flex" justifyContent="center">
-        <Box width="50%" marginTop="8px">
+        <Box width="50%" minWidth="300px" marginTop="8px">
           <StyledTextField
             id="email"
             name="email"
