@@ -59,7 +59,7 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
           'account',
           [
             {
-              userName: `${values.lastName} ${values.firstName}`,
+              userName: `${values.firstName} ${values.lastName}`,
               emailAddress: values.email,
               storeName: values.restaurantName,
             },
@@ -104,22 +104,22 @@ const ApplicationForm: React.FunctionComponent<Props> = ({ onSuccess }) => {
 
           <Box display="flex" flexDirection="row">
             <StyledTextField
-              id="lastName"
-              name="lastName"
-              label={touched.lastName ? errors.lastName : 'Last Name'}
-              onChange={handleChange}
-              value={values.lastName}
-              error={touched.lastName && !!errors.lastName}
-              fullWidth
-            />
-            <Box width={16} />
-            <StyledTextField
               id="firstName"
               name="firstName"
               label={touched.firstName ? errors.firstName : 'First Name'}
               onChange={handleChange}
               value={values.firstName}
               error={touched.firstName && !!errors.firstName}
+              fullWidth
+            />
+            <Box width={16} />
+            <StyledTextField
+              id="lastName"
+              name="lastName"
+              label={touched.lastName ? errors.lastName : 'Last Name'}
+              onChange={handleChange}
+              value={values.lastName}
+              error={touched.lastName && !!errors.lastName}
               fullWidth
             />
           </Box>
