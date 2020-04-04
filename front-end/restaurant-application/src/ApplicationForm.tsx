@@ -41,23 +41,27 @@ const ApplicationForm: React.FunctionComponent = () => {
       email: Yup.string()
         .email('Invalid email address')
         .required('Email is required'),
+      restaurantName: Yup.string().required('Restaurant name is required'),
     }),
     onSubmit: (values) => {
       console.log({ values });
     },
   });
 
+  const { values, touched, errors, handleSubmit, handleChange } = formik;
+
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <Box display="flex" justifyContent="center">
         <Box width="50%" marginTop="8px">
           <StyledTextField
             id="email"
             name="email"
-            label="Email"
+            label={touched.email ? errors.email : 'Email'}
             type="email"
-            onChange={formik.handleChange}
-            value={formik.values.email}
+            onChange={handleChange}
+            value={values.email}
+            error={touched.email && !!errors.email}
             fullWidth
           />
 
@@ -65,18 +69,20 @@ const ApplicationForm: React.FunctionComponent = () => {
             <StyledTextField
               id="lastName"
               name="lastName"
-              label="Last Name"
-              onChange={formik.handleChange}
-              value={formik.values.lastName}
+              label={touched.lastName ? errors.lastName : 'Last Name'}
+              onChange={handleChange}
+              value={values.lastName}
+              error={touched.lastName && !!errors.lastName}
               fullWidth
             />
             <Box width={16} />
             <StyledTextField
               id="firstName"
               name="firstName"
-              label="First Name"
-              onChange={formik.handleChange}
-              value={formik.values.firstName}
+              label={touched.firstName ? errors.firstName : 'First Name'}
+              onChange={handleChange}
+              value={values.firstName}
+              error={touched.firstName && !!errors.firstName}
               fullWidth
             />
           </Box>
@@ -84,9 +90,12 @@ const ApplicationForm: React.FunctionComponent = () => {
           <StyledTextField
             id="restaurantName"
             name="restaurantName"
-            label="Restaurant Name"
-            onChange={formik.handleChange}
-            value={formik.values.restaurantName}
+            label={
+              touched.restaurantName ? errors.restaurantName : 'Restaurant Name'
+            }
+            onChange={handleChange}
+            value={values.restaurantName}
+            error={touched.restaurantName && !!errors.restaurantName}
             fullWidth
           />
 
