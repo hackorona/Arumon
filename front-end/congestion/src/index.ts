@@ -1,11 +1,12 @@
 import axios from 'axios'
+import * as moment from 'moment'
 import * as am4core from "@amcharts/amcharts4/core"
 import * as am4charts from "@amcharts/amcharts4/charts"
 import am4themes_animated from "@amcharts/amcharts4/themes/animated"
 
-import { Response, Body } from './model'
+import { Response, Body, Density } from './model'
 
-const baseURL = 'https://qakz6v6ril.execute-api.ap-northeast-1.amazonaws.com/dev/density'
+const baseURL = 'https://btghcyhfwa.execute-api.ap-northeast-1.amazonaws.com/staging/density'
 
 am4core.useTheme(am4themes_animated)
 
@@ -16,63 +17,77 @@ const currentScript = () => {
   return document.getElementById('bentogo-widget')
 }
 
-const makeChart = (data) => {
-  let chart = am4core.create("chartdiv", am4charts.XYChart)
-  chart.hiddenState.properties.opacity = 0 // this creates initial fade-in
+interface DensityTMP {
+  from: string,
+  to: string,
+  numberOfPeople: number | string
+}
 
+const makeChart = (data: [DensityTMP]) => {
+  console.log(data)
+
+  const chart = am4core.create("bentogo-widget-chart", am4charts.XYChart)
   chart.data = data
-
   chart.dateFormatter.inputDateFormat = "HH:mm"
   chart.zoomOutButton.disabled = true
-
-  let dateAxis = chart.xAxes.push(new am4charts.DateAxis())
-  dateAxis.renderer.grid.template.strokeOpacity = 0
-  dateAxis.renderer.minGridDistance = 0
+  
+  const dateAxis = chart.xAxes.push(new am4charts.DateAxis())
   dateAxis.dateFormats.setKey("day", "HH:mm")
-  dateAxis.tooltip.hiddenState.properties.opacity = 1
-  dateAxis.tooltip.hiddenState.properties.visible = true
-
-  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis())
-  valueAxis.renderer.inside = true
-  valueAxis.renderer.labels.template.fillOpacity = 0.3
-  valueAxis.renderer.grid.template.strokeOpacity = 0
-  valueAxis.min = 0
-  valueAxis.cursorTooltipEnabled = false
-
-  let series = chart.series.push(new am4charts.ColumnSeries)
+  dateAxis.renderer.grid.template.location = 0
+  dateAxis.renderer.minGridDistance = 30
+  dateAxis.baseInterval = {
+    "timeUnit": "minute",
+    "count": 15
+  }
+  
+  const valueAxis = chart.yAxes.push(new am4charts.ValueAxis())
+  const series = chart.series.push(new am4charts.ColumnSeries())
   series.dataFields.valueY = "numberOfPeople"
-  series.dataFields.dateX = "timeZone"
-  series.tooltipText = "{valueY.value}"
-
-  let columnTemplate = series.columns.template
-  columnTemplate.width = 50
-  columnTemplate.column.cornerRadiusTopLeft = 10
-  columnTemplate.column.cornerRadiusTopRight = 10
-  columnTemplate.strokeOpacity = 0
-
-  let cursor = new am4charts.XYCursor()
-  cursor.behavior = "panX"
-  chart.cursor = cursor
-  cursor.lineX.disabled = true
-
-  let middleLine = chart.plotContainer.createChild(am4core.Line)
-  middleLine.strokeOpacity = 1
-  middleLine.stroke = am4core.color("#000000")
-  middleLine.strokeDasharray = "2,2"
-  middleLine.align = "center"
-  middleLine.zIndex = 1
-  middleLine.adapter.add("y2", function (y2, target) {
-    return target.parent.pixelHeight
-  })
+  series.dataFields.dateX = "from"
+  series.name = "Orders"
+  series.columns.template.tooltipText = "[bold]{valueY}[/]"
+  series.columns.template.fillOpacity = .8
+  
+  const columnTemplate = series.columns.template
+  columnTemplate.strokeWidth = 2
+  columnTemplate.strokeOpacity = 1
 }
 
 const main = async () => {
+  const element = document.getElementById('bentogo-widget-area')
+  const titlediv = document.createElement('div')
+  titlediv.setAttribute('id','bentogo-widget-header')
+  titlediv.innerHTML = '<h2>混雑状況 powerd by BenToGo</h2>'
+
+  element.appendChild(titlediv)
+  const chartdiv = document.createElement('div')
+  chartdiv.setAttribute('id','bentogo-widget-chart')
+  chartdiv.setAttribute("style", "width:100% height:250px")
+  element.appendChild(chartdiv)
+
   const current = currentScript()
   const store_id = current.getAttribute('data-shop').replace('.myshopify.com','')
+
   const result = await axios.get(baseURL, {params: {store_id: store_id}})
   const data:Response = <Response>result.data
   const body:Body = <Body>JSON.parse(data.body)
-  makeChart(body.data[0].density)
+
+  const from = moment().subtract(2, 'hours')
+  const to = moment()
+
+  const chartData:[DensityTMP] = body[0].density
+    .map((v:Density) => {
+    const time = v.timeZone.split('-')
+    return <DensityTMP>{from: time[0], to: time[1], numberOfPeople: v.numberOfPeople}
+    })
+    .filter((v:DensityTMP) => (moment(v.from, "h:mm").isSameOrAfter(from) && moment(v.from, "h:mm").isSameOrBefore(to)))
+
+  if(chartData.length > 0) {
+    makeChart(chartData)
+  } else {
+    chartdiv.innerText = "We don't have enough data."
+  }
+
 }
 
 main()
