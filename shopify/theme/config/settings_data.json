@@ -52,7 +52,7 @@
       "featured-products": {
         "type": "featured-products",
         "settings": {
-          "title": "特集コレクション",
+          "title": "特集メニュー",
           "home_page_featured_products": "frontpage",
           "home_featured_products_row_num": 2
         }
