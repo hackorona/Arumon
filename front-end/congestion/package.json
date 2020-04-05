@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode=production",
-    "watch": "webpack -w --mode=development"
+    "build": "rm -rf dist/ && webpack --mode=production",
+    "watch": "rm -rf dist/ && webpack -w --mode=development"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.12",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "moment": "^2.24.0"
   }
 }
