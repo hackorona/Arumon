@@ -4,8 +4,9 @@
 日本では政府から週末の外出自粛の要請がおこなわれており、密閉・密集・密接を避けるように言われている。
 これにより、飲食店など人が集まる場所で食事がとりづらくなっている。
 日本の飲食店の多くは、店内での料理提供が売り上げの大部分だったため、客足が遠のき、売り上げが下がっている。
+（60%以上のお店が去年と比べて売上を下げており、30%を超える売上減のお店も30
+%近く存在する）
 デリバリーサービスを開始した大手チェーン店もあるが、個人経営のお店の多くはITの利用にも疎く、まだまだオンラインでのサービス展開はおこなえていない。
-（参考文献入れる）
 
 The Japanese government requires people to avoid sealed/crowd/closed situations continuously and to manage to stay home during the weekend.
 This requirement makes us harder to go to restaurant and eat something in there.
@@ -42,7 +43,7 @@ We support to reduce the risk of infection for COVID-19 by this solution.
 混雑や感染リスクを避けつつプロの料理を堪能したい利用者と、オンラインチャネルがないため、料理の提供方法に悩む飲食店とのマッチングをおこなう。
 
 There are some delivery services like "UberEats" in Japan and also Japan has the culture of "Demae" that some restaurants have own delivery service.
-The number of delivery service user is increasing because people stay home due to the news of expanding the number of the infections.
+The number of delivery service users is increasing because people stay home due to expanding the number of the infections.
 However, some people is unwilling to use these services because the delivery staffs meet with unspecified number of people in the day.
 
 On the other hand, we have another culture.
@@ -59,23 +60,28 @@ We will support both users who would like to avoid the crowd situation/higher in
 - We will get a notification when a new application is created
 - We create a new site with our theme on Shopify platform and delegate it to the owner
 - The site has the following features by default
-  + list of dishes
-  + pre-order
+  + the list of dishes
+  + gift card
+  + pre-order and payment
+  + order-email and email magazine
   + restaurant information
+  + blog
   + congestion map
   + usage of BenToGo (Available restaurants)
 
 ### System Architecture
 ## Front end
 - Application form is made by ReactJS
-- The list of applicants is managed by GoogleSpreadSheet
+- The list of applicants is managed by Google Sheets
+- Notification to Slack through IFTTT
 - The order management system works on Shopify
 
 ## Back end
 - Congestion situation is calculated by Lambda
-- Analytics is used for Google AppScript
+- BI is used for Google AppScript
 
 ### Future Work
+- Globalization
 - Promote the service with restaurants
 - Automate the building/delegating process of the site
 - Provide several kinds of theme for the site
