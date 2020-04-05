@@ -1,18 +1,33 @@
 # Arumon
 ## BenToGo
 ### Problem
-新型コロナウイルスの影響により、多くのオフィスワーカーが在宅勤務に切り替えている。
-日本でも同様に在宅勤務の推奨・外出自粛の要請がなされている。
-飲食店の多くは、これまで店内での料理提供が売り上げの主だったため、客が来なくなり、売り上げが下がっている。
-大手チェーン店など、体力のある企業はデリバリーサービスを開始したが、個人経営のお店の多くはITの利用にも疎く、まだまだオンラインでのサービス展開はおこなえていない。
+日本では政府から週末の外出自粛の要請がおこなわれており、密閉・密集・密接を避けるように言われている。
+これにより、飲食店など人が集まる場所で食事がとりづらくなっている。
+日本の飲食店の多くは、店内での料理提供が売り上げの大部分だったため、客足が遠のき、売り上げが下がっている。
+デリバリーサービスを開始した大手チェーン店もあるが、個人経営のお店の多くはITの利用にも疎く、まだまだオンラインでのサービス展開はおこなえていない。
+
+The Japanese government requires people to avoid sealed/crowd/closed situations continuously and to manage to stay home during the weekend.
+This requirement makes us harder to go to restaurant and eat something in there.
+Most of restaurant in Japan earn from in-store services, then they are struggling the current situation.
+Although some big companies started delivery service, there are a lot of restaurants cannot provide their service on the internet because they aren't used to IT.
 
 ### Solution
-飲食店向けに、オンライン注文を受け付けるサイトを簡単に立ち上げられるサービスを提供する。
-スマートフォンから簡単に申し込みができ、サイトの立ち上げをおこなえる。
-サイトには、持ち帰り用の商品を登録し、公開する。
+飲食店向けに、オンライン注文を受け付けるサイトを簡単に立ち上げられるサービス「BenToGo」を提供する。
+レストランのオーナーは、スマートフォンから簡単に利用申込ができ、サイトを立ち上げることができる。
+サイトでは、商品を登録し、オンラインサイトに公開する。
 
-サイト利用者はサイトからプレオーダーをおこない、混雑具合から、取りに行く時間を検討。
-混在している時間を避けて持ち帰りをおこなうことで、新型コロナウイルスへの感染リスクを下げることができる。
+サイト利用者はリストから商品を選び、プレオーダーする。
+その際、混雑具合から、取りに行く時間帯を選択することができる。
+これにより、混在している時間を避けることができ、不要な人との接触を避け、新型コロナウイルスへの感染リスクを下げる。
+
+We provide a service for restaurants to create an online ordering service easily and the service name is "BentToGo".
+An owner of a restaurant can apply for the service by smartphone, and then they will get an online restaurant.
+They can add the list of dishes on the site and publish the list.
+
+People pre-order a dish/dishes via the online page.
+Then, they can see congestion situation and select the pick-up time to avoid "crowd" environment.
+We support to reduce the risk of infection for COVID-19 by this solution.
+
 
 ### Background
 日本にも UberEats のようなサービスや、出前と呼ばれる各お店ごとが固有にもつ食べ物の配達文化が存在する。
@@ -32,10 +47,12 @@ BenToGo は、混雑・感染リスクを避けつつプロの料理を楽しみ
   + congestion map
   + analytics
 
-
+### System Architecture
 ## Front end
 - Application for restaurant owners
 - Population of customers for each time-period
 
 ## Back end
 - Lambda function to check the existance of store id
+
+### Future Work
