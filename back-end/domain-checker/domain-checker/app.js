@@ -18,11 +18,14 @@ exports.lambdaHandler = async (event, _context) => {
       event &&
       event.queryStringParameters &&
       event.queryStringParameters.storeId;
-    const uri = `https://${storeId}.myshopify.com/`;
+    const uri = storeId && `https://${storeId}.myshopify.com/`;
     const response = await axios(uri);
 
     return {
       statusCode: response.status,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({
         uri,
         message: response.statusText,
@@ -30,8 +33,25 @@ exports.lambdaHandler = async (event, _context) => {
     };
   } catch (err) {
     const { response } = err;
+
+    // Handle 404 error as normal processing
+    if (response.status === 404) {
+      return {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          message: response.statusText,
+        }),
+      };
+    }
+
     return {
       statusCode: response.status,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({
         message: response.statusText,
       }),

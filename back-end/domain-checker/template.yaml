@@ -11,14 +11,14 @@ Globals:
     Timeout: 3
 
 Resources:
-  HelloWorldFunction:
+  DomainCheckerFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: domain-checker/
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Events:
-        HelloWorld:
+        DomainChecker:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /domain-checker
