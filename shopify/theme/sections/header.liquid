@@ -1,0 +1,474 @@
+{%- unless section.settings.logo == blank -%}
+  {%- assign logo_max_height = section.settings.logo_max_width | divided_by: section.settings.logo.aspect_ratio -%}
+  {% if logo_max_height > 600 %}
+    {%- assign logo_max_width = 600 | times: section.settings.logo.aspect_ratio -%}
+  {% else %}
+    {%- assign logo_max_width = section.settings.logo_max_width -%}
+  {% endif %}
+
+  <style>
+    .site-header__logo {
+      width: {{ logo_max_width | append: 'px'}};
+    }
+    #HeaderLogoWrapper {
+      max-width: {{ logo_max_width | append: 'px'}} !important;
+    }
+  </style>
+{%- endunless -%}
+
+{% if section.settings.show_announcement and section.settings.home_page_only == false or request.page_type == 'index' %}
+  <style>
+    .announcement-bar--link:hover {
+      {% assign brightness = settings.color_primary_color | color_brightness %}
+
+      {% if brightness <= 224 %}
+        background-color: {{ settings.color_primary_color | color_lighten: 4 }};
+      {% else %}
+        background-color: {{ settings.color_primary_color | color_darken: 8 }};
+      {% endif %}
+    }
+  </style>
+
+  {% if section.settings.announcement_link == blank %}
+    <div class="announcement-bar">
+  {% else %}
+    <a href="{{ section.settings.announcement_link }}" class="announcement-bar announcement-bar--link">
+  {% endif %}
+
+    <p class="announcement-bar__message site-wrapper">{{ section.settings.announcement_text | escape }}</p>
+
+  {% if section.settings.announcement_link == blank %}
+    </div>
+  {% else %}
+    </a>
+  {% endif %}
+{% else %}
+  <div class="page-border"></div>
+{% endif %}
+
+<div class="site-wrapper">
+  <div class="top-bar grid">
+
+    <div class="grid__item medium-up--one-fifth small--one-half">
+      <div class="top-bar__search">
+        <a href="{{ routes.search_url }}" class="medium-up--hide">
+          {% include 'icon-search' %}
+        </a>
+        <form action="{{ routes.search_url }}" method="get" class="search-bar small--hide" role="search">
+          {% comment %}<input type="hidden" name="type" value="product">{% endcomment %}
+          <button type="submit" class="search-bar__submit">
+            {% include 'icon-search' %}
+            <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+          </button>
+          <input type="search" name="q" class="search-bar__input" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+        </form>
+      </div>
+    </div>
+
+    {% if shop.customer_accounts_enabled %}
+      <div class="grid__item medium-up--two-fifths small--hide">
+        <span class="customer-links small--hide">
+          {% if customer %}
+            {% if customer.first_name != blank %}
+              {% capture first_name %}<a href="{{ routes.account_url }}">{{ customer.first_name }}</a>{% endcapture %}
+              {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
+            {% else %}
+              <a href="{{ routes.account_url }}">{{ 'layout.customer.account' | t }}</a>
+            {% endif %}
+            <span class="vertical-divider"></span>
+            {{ 'layout.customer.log_out' | t | customer_logout_link }}
+          {% else %}
+            {{ 'layout.customer.log_in' | t | customer_login_link }}
+            <span class="vertical-divider"></span>
+            {{ 'layout.customer.create_account' | t | customer_register_link }}
+          {% endif %}
+        </span>
+      </div>
+    {% endif %}
+
+    <div class="grid__item {% if shop.customer_accounts_enabled %} medium-up--two-fifths {% else %} medium-up--four-fifths {% endif %} small--one-half text-right">
+      <a href="{{ routes.cart_url }}" class="site-header__cart">
+        {% include 'icon-cart' %}
+        <span class="small--hide">
+          {{ 'layout.cart.title' | t }}
+          (<span id="CartCount">{{ cart.item_count }}</span>)
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <hr class="small--hide hr--border">
+
+  <header class="site-header grid medium-up--grid--table" role="banner">
+    <div class="grid__item small--text-center">
+      <div itemscope itemtype="http://schema.org/Organization">
+        {% comment %}
+          Use the uploaded logo from theme settings if enabled.
+          Site name uses `h1` tag on homepage, div on other pages.
+        {% endcomment %}
+        {%- assign img_url = section.settings.logo | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+        {% if section.settings.logo %}
+          <div id="HeaderLogoWrapper" class="supports-js">
+            <a href="{{ routes.root_url }}" itemprop="url" style="padding-top:{{ 1 | divided_by: section.settings.logo.aspect_ratio | times: 100}}%; display: block;">
+              <img id="HeaderLogo"
+                   class="lazyload"
+                   src="{{ section.settings.logo | img_url: '150x150' }}"
+                   data-src="{{ img_url }}"
+                   data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                   data-aspectratio="{{ product.featured_image.aspect_ratio }}"
+                   data-sizes="auto"
+                   alt="{{ section.settings.logo.alt | default: shop.name }}"
+                   itemprop="logo">
+            </a>
+          </div>
+          <noscript>
+            {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
+            <a href="{{ routes.root_url }}" itemprop="url">
+              <img class="site-header__logo" src="{{ section.settings.logo | img_url: image_size }}"
+              srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+              alt="{{ section.settings.logo.alt | default: shop.name }}"
+              itemprop="logo">
+            </a>
+          </noscript>
+          {% if request.page_type == 'index' %}
+            <h1 class="visually-hidden">{{ shop.name }}</h1>
+          {% endif %}
+        {% else %}
+          {% if request.page_type == 'index' %}
+            <h1 class="site-header__site-name">
+              <a href="{{ routes.root_url }}" itemprop="url">{{ shop.name }}</a>
+            </h1>
+          {% else %}
+            <a href="{{ routes.root_url }}" class="site-header__site-name h1" itemprop="url">
+              {{ shop.name }}
+            </a>
+            {% if request.page_type == 'index' %}
+              <h1 class="visually-hidden">{{ shop.name }}</h1>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+    {% unless section.settings.tagline == blank %}
+      <div class="grid__item medium-up--text-right small--text-center">
+        <div class="rte tagline">
+          {{ section.settings.tagline }}
+        </div>
+      </div>
+    {% endunless %}
+  </header>
+</div>
+
+
+
+{% schema %}
+{
+  "name": {
+    "da": "Overskrift",
+    "de": "Titel",
+    "en": "Header",
+    "es": "Encabezado",
+    "fi": "Ylätunniste",
+    "fr": "En-tête",
+    "hi": "हैडर",
+    "it": "Header",
+    "ja": "ヘッダー",
+    "ko": "머리글",
+    "nb": "Header",
+    "nl": "Koptekst",
+    "pt-BR": "Cabeçalho",
+    "pt-PT": "Cabeçalho",
+    "sv": "Rubrik",
+    "th": "ส่วนหัว",
+    "zh-CN": "标头",
+    "zh-TW": "標頭"
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": {
+        "da": "Logo",
+        "de": "Logo",
+        "en": "Logo",
+        "es": "Logotipo",
+        "fi": "Logo",
+        "fr": "Logo",
+        "hi": "लोगो",
+        "it": "Logo",
+        "ja": "ロゴ",
+        "ko": "로고",
+        "nb": "Logo",
+        "nl": "Logo",
+        "pt-BR": "Logotipo",
+        "pt-PT": "Logótipo",
+        "sv": "Logotyp",
+        "th": "โลโก้",
+        "zh-CN": "logo",
+        "zh-TW": "商標"
+      }
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": {
+        "da": "Logobillede",
+        "de": "Logo-Foto",
+        "en": "Logo image",
+        "es": "Imagen del logotipo",
+        "fi": "Logokuva",
+        "fr": "Image du logo",
+        "hi": "लोगो इमेज",
+        "it": "Immagine del logo",
+        "ja": "ロゴ画像",
+        "ko": "로고 이미지",
+        "nb": "Logobilde",
+        "nl": "Afbeelding van logo",
+        "pt-BR": "Imagem do logotipo",
+        "pt-PT": "Imagem do logótipo",
+        "sv": "Logobild",
+        "th": "รูปภาพโลโก้",
+        "zh-CN": "logo 图片",
+        "zh-TW": "標誌圖片"
+      }
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "label": {
+        "da": "Tilpasset logobredde",
+        "de": "Logobreite",
+        "en": "Custom logo width",
+        "es": "Ancho del logotipo personalizado",
+        "fi": "Mukautetun logon leveys",
+        "fr": "Largeur personnalisée du logo",
+        "hi": "कस्टम लोगो की चौड़ाई",
+        "it": "Larghezza logo personalizzato",
+        "ja": "ロゴの幅をカスタマイズする",
+        "ko": "사용자 지정 로고 폭",
+        "nb": "Tilpasset logobredde",
+        "nl": "Aangepaste logo-breedte",
+        "pt-BR": "Largura do logotipo personalizado",
+        "pt-PT": "Largura de logótipo personalizada",
+        "sv": "Anpassad logotypsbredd",
+        "th": "ความกว้างของโลโก้ที่กำหนดเอง",
+        "zh-CN": "自定义 logo 宽度",
+        "zh-TW": "自訂商標寬度"
+      },
+      "default": 150,
+      "min": 50,
+      "max": 250,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": {
+        "da": "Meddelelseslinje",
+        "de": "Ankündigungsleiste",
+        "en": "Announcement bar",
+        "es": "Barra de anuncios",
+        "fi": "Ilmoituspalkki",
+        "fr": "Barre d'annonces",
+        "hi": "घोषणा बार",
+        "it": "Barra degli annunci",
+        "ja": "告知バー",
+        "ko": "공지 표시줄",
+        "nb": "Kunngjøringslinje",
+        "nl": "Aankondigingsbalk",
+        "pt-BR": "Barra de avisos",
+        "pt-PT": "Barra de comunicado",
+        "sv": "Meddelandefält",
+        "th": "แถบประกาศ",
+        "zh-CN": "公告栏",
+        "zh-TW": "公告列"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": {
+        "da": "Vis meddelelse",
+        "de": "Ankündigung anzeigen",
+        "en": "Show announcement",
+        "es": "Mostrar anuncio",
+        "fi": "Näytä ilmoitus",
+        "fr": "Afficher l'annonce",
+        "hi": "घोषणा डिखाएं",
+        "it": "Mostra annuncio",
+        "ja": "告知を表示する",
+        "ko": "공지 표시",
+        "nb": "Vis kunngjøring",
+        "nl": "Aankondiging weergeven",
+        "pt-BR": "Exibir anúncio",
+        "pt-PT": "Mostrar comunicado",
+        "sv": "Visa tillkännagivande",
+        "th": "แสดงประกาศ",
+        "zh-CN": "显示公告",
+        "zh-TW": "顯示公告"
+      },
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "home_page_only",
+      "label": {
+        "da": "Kun startside",
+        "de": "Nur Startseite",
+        "en": "Home page only",
+        "es": "Solo página de inicio",
+        "fi": "Vain etusivu",
+        "fr": "Page d'accueil uniquement",
+        "hi": "केवल होमपेज",
+        "it": "Solo home page",
+        "ja": "ホームページのみ",
+        "ko": "홈페이지만",
+        "nb": "Kun på startsiden",
+        "nl": "Alleen homepage",
+        "pt-BR": "Apenas na página inicial",
+        "pt-PT": "Apenas a página inicial",
+        "sv": "Endast hemsida",
+        "th": "หน้าแรกเท่านั้น",
+        "zh-CN": "仅主页",
+        "zh-TW": "僅限首頁"
+      },
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": {
+        "da": "Meddelelsestekst",
+        "de": "Ankündigungstext",
+        "en": "Announcement text",
+        "es": "Texto del anuncio",
+        "fi": "Ilmoitusteksti",
+        "fr": "Texte d'annonce",
+        "hi": "घोषणा पाठ",
+        "it": "Testo annuncio",
+        "ja": "告知テキスト",
+        "ko": "공지 텍스트",
+        "nb": "Kunngjøringstekst",
+        "nl": "Aankondigingstekst",
+        "pt-BR": "Texto do anúncio",
+        "pt-PT": "Texto do comunicado",
+        "sv": "Meddelandetext",
+        "th": "ข้อความประกาศ",
+        "zh-CN": "公告文本",
+        "zh-TW": "公告文字"
+      },
+      "default": {
+        "da": "Meddel noget her",
+        "de": "Hier etwas ankündigen",
+        "en": "Announce something here",
+        "es": "Anuncia algo aquí",
+        "fi": "Ilmoita jotakin tässä",
+        "fr": "Annoncez quelque chose ici",
+        "hi": "यहां कुछ घोषित करें",
+        "it": "Annuncia qualcosa qui",
+        "ja": "ここで告知してください",
+        "ko": "여기에 공지하십시오",
+        "nb": "Kunngjør noe her",
+        "nl": "Kondig hier iets aan",
+        "pt-BR": "Anuncie algo aqui",
+        "pt-PT": "Anunciar algo aqui",
+        "sv": "Meddela något här",
+        "th": "ประกาศข้อความที่นี่",
+        "zh-CN": "在此处进行公告",
+        "zh-TW": "在此公告資訊"
+      }
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": {
+        "da": "Link til meddelelse",
+        "de": "Ankündigungslink",
+        "en": "Announcement link",
+        "es": "Enlace de anuncio",
+        "fi": "Ilmoituslinkki",
+        "fr": "Lien d'annonce",
+        "hi": "घोषणा लिंक",
+        "it": "Link annuncio",
+        "ja": "告知リンク",
+        "ko": "공지 링크",
+        "nb": "Kunngjøringskobling",
+        "nl": "Aankondigingslink",
+        "pt-BR": "Link de anúncio",
+        "pt-PT": "Ligação do comunicado",
+        "sv": "Meddelandelänk",
+        "th": "ลิงก์ประกาศ",
+        "zh-CN": "公告链接",
+        "zh-TW": "公告連結"
+      },
+      "info": {
+        "da": "Valgfri",
+        "de": "Optional",
+        "en": "Optional",
+        "es": "Opcional",
+        "fi": "Valinnainen",
+        "fr": "Facultatif",
+        "hi": "वैकल्पिक",
+        "it": "Facoltativo",
+        "ja": "オプション",
+        "ko": "선택 사항",
+        "nb": "Valgfritt",
+        "nl": "Optioneel",
+        "pt-BR": "Opcional",
+        "pt-PT": "Opcional",
+        "sv": "Valfritt",
+        "th": "ไม่จำเป็น",
+        "zh-CN": "可选",
+        "zh-TW": "(選填)"
+      }
+    },
+    {
+      "type": "header",
+      "content": {
+        "da": "Slogan",
+        "de": "Tagline",
+        "en": "Tagline",
+        "es": "Eslogan",
+        "fi": "Iskulause",
+        "fr": "Slogan",
+        "hi": "टैगलाइन",
+        "it": "Tagline",
+        "ja": "タグライン",
+        "ko": "태그 라인",
+        "nb": "Slagord",
+        "nl": "Tagline",
+        "pt-BR": "Tagline",
+        "pt-PT": "slogan",
+        "sv": "Tagline",
+        "th": "สโลแกน",
+        "zh-CN": "标语",
+        "zh-TW": "標語"
+      }
+    },
+    {
+      "type": "richtext",
+      "id": "tagline",
+      "label": {
+        "da": "Tekst",
+        "de": "Text",
+        "en": "Text",
+        "es": "Texto",
+        "fi": "Teksti",
+        "fr": "Texte",
+        "hi": "टेक्स्ट",
+        "it": "Testo",
+        "ja": "テキスト",
+        "ko": "텍스트",
+        "nb": "Tekst",
+        "nl": "Tekst",
+        "pt-BR": "Texto",
+        "pt-PT": "Texto",
+        "sv": "Text",
+        "th": "ข้อความ",
+        "zh-CN": "文本",
+        "zh-TW": "文字"
+      }
+    }
+  ]
+}
+{% endschema %}

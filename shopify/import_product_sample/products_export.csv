@@ -1,0 +1,16 @@
+Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Option2 Name,Option2 Value,Option3 Name,Option3 Value,Variant SKU,Variant Grams,Variant Inventory Tracker,Variant Inventory Qty,Variant Inventory Policy,Variant Fulfillment Service,Variant Price,Variant Compare At Price,Variant Requires Shipping,Variant Taxable,Variant Barcode,Image Src,Image Position,Image Alt Text,Gift Card,SEO Title,SEO Description,Google Shopping / Google Product Category,Google Shopping / Gender,Google Shopping / Age Group,Google Shopping / MPN,Google Shopping / AdWords Grouping,Google Shopping / AdWords Labels,Google Shopping / Condition,Google Shopping / Custom Product,Google Shopping / Custom Label 0,Google Shopping / Custom Label 1,Google Shopping / Custom Label 2,Google Shopping / Custom Label 3,Google Shopping / Custom Label 4,Variant Image,Variant Weight Unit,Variant Tax Code,Cost per item
+からあげ弁当,からあげ弁当（サンプル）,"<p>おいしいからあげ弁当です。</p>
+<p>店舗で購入完了画面を提示してください。</p>
+<p>※複製して利用してください。</p>",BenToGo,"","",true,受取時間,11:00-11:15,,,,,'1,0,shopify,3,deny,manual,650,,false,true,"",https://cdn.shopify.com/s/files/1/0374/5185/8053/products/2016-05-23-06.17.00-560x420.jpg?v=1585918699,1,,false,,,,,,,,,,,,,,,,,kg,,
+からあげ弁当,,,,,,,,11:15-11:30,,,,,'2,0,shopify,5,deny,manual,650,,false,true,"",,,,,,,,,,,,,,,,,,,,,kg,,
+からあげ弁当,,,,,,,,11:30-11:45,,,,,'3,0,shopify,4,deny,manual,650,,false,true,"",,,,,,,,,,,,,,,,,,,,,kg,,
+からあげ弁当,,,,,,,,11:45-12:00,,,,,'4,0,shopify,4,deny,manual,650,,false,true,"",,,,,,,,,,,,,,,,,,,,,kg,,
+からあげ弁当,,,,,,,,12:00-12:15,,,,,'5,0,shopify,3,deny,manual,650,,false,true,"",,,,,,,,,,,,,,,,,,,,,kg,,
+からあげ弁当,,,,,,,,12:15-12:30,,,,,'6,0,shopify,5,deny,manual,650,,false,true,"",,,,,,,,,,,,,,,,,,,,,kg,,
+からあげ弁当,,,,,,,,12:30-12:45,,,,,'7,0,shopify,5,deny,manual,650,,false,true,"",,,,,,,,,,,,,,,,,,,,,kg,,
+からあげ弁当,,,,,,,,12:45-13:00,,,,,'8,0,shopify,4,deny,manual,650,,false,true,"",,,,,,,,,,,,,,,,,,,,,kg,,
+ギフトカード,ギフトカード（サンプル）,"<p>ギフトカードを販売できます。</p>
+<p><span>※複製して利用してください。</span></p>",BenToGo,"","",true,Title,1000円,,,,,'1,0,,0,continue,gift_card,1000,,false,false,,https://cdn.shopify.com/s/files/1/0374/5185/8053/products/e38bd83af578077b65a31424bd24d085.png?v=1585919650,1,,true,,,,,,,,,,,,,,,,,kg,,
+ギフトカード,,,,,,,,3000円,,,,,'2,0,,0,continue,gift_card,3000,,false,false,,,,,,,,,,,,,,,,,,,,,,kg,,
+ギフトカード,,,,,,,,5000円,,,,,'3,0,,0,continue,gift_card,5000,,false,false,,,,,,,,,,,,,,,,,,,,,,kg,,
+ギフトカード,,,,,,,,10000円,,,,,'4,0,,0,continue,gift_card,10000,,false,false,,,,,,,,,,,,,,,,,,,,,,kg,,
