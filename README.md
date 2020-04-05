@@ -30,29 +30,51 @@ We support to reduce the risk of infection for COVID-19 by this solution.
 
 
 ### Background
-日本にも UberEats のようなサービスや、出前と呼ばれる各お店ごとが固有にもつ食べ物の配達文化が存在する。
-同様に、弁当という、箱に詰められた料理を持ち帰る文化も存在する。
-連日、感染拡大のニュースが報道される中、不特定多数の人間に接触する配達サービスを利用したくない。
-一方で、たまにはいつもと異なるプロの料理を食べたい、というニーズも存在する。
+日本にも UberEats や、「出前」と呼ばれる各お店ごとが個別にもつ料理の配達文化が存在する。
+現在、日本では感染拡大のニュースが連日報道されており、外出を控える人が増えているため、配達サービスの利用者は増加している、
+（ドミノピザの配達員のニュースでも載せる？）
+一方で、不特定多数の人間に接触する配達サービスを利用したくないと考える人も存在する。
 
-BenToGo は、混雑・感染リスクを避けつつプロの料理を楽しみたいニーズと、オンラインチャネルがなく、経営に苦しんでいる飲食店とのマッチングをおこなう。
+日本には「弁当」という箱に詰められた持ち帰り用の料理の文化が存在する。
+コンビニエンスストアなどでは多くの種類の弁当が販売されており、利用者も多い。
+「BenToGo」は、プロの料理人が作成する「弁当」を、気軽に調達できる世界を提供する。
+混雑や感染リスクを避けつつプロの料理を堪能したい利用者と、オンラインチャネルがないため、料理の提供方法に悩む飲食店とのマッチングをおこなう。
+
+There are some delivery services like "UberEats" in Japan and also Japan has the culture of "Demae" that some restaurants have own delivery service.
+The number of delivery service user is increasing because people stay home due to the news of expanding the number of the infections.
+However, some people is unwilling to use these services because the delivery staffs meet with unspecified number of people in the day.
+
+On the other hand, we have another culture.
+It is the culture of "Bento".
+"Bento" is the box that has various dishes.
+For example, beef rice bowl, fried pork with rice and so on.
+There are a lot of "Bento"s in convenience store in Japan and users as well.
+
+We will provide the situation that people can freely get a "bento" made by cook.
+We will support both users who would like to avoid the crowd situation/higher infection risk but enjoy eating delicious dishes and restaurants is worried how to serve dishes because of not having online channel.
 
 ### Overview of the service
 - Owner of restaurant can create a new site via the application form
 - We will get a notification when a new application is created
 - We create a new site with our theme on Shopify platform and delegate it to the owner
 - The site has the following features by default
-  + add/delete items
+  + list of dishes
   + pre-order
+  + restaurant information
   + congestion map
-  + analytics
+  + usage of BenToGo (Available restaurants)
 
 ### System Architecture
 ## Front end
-- Application for restaurant owners
-- Population of customers for each time-period
+- Application form is made by ReactJS
+- The list of applicants is managed by GoogleSpreadSheet
+- The order management system works on Shopify
 
 ## Back end
-- Lambda function to check the existance of store id
+- Congestion situation is calculated by Lambda
+- Analytics is used for Google AppScript
 
 ### Future Work
+- Promote the service with restaurants
+- Automate the building/delegating process of the site
+- Provide several kinds of theme for the site
