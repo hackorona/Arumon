@@ -5,6 +5,7 @@
 これにより、飲食店など人が集まる場所で食事がとりづらくなっている。
 日本の飲食店の多くは、店内での料理提供が売り上げの大部分だったため、客足が遠のき、売り上げが下がっている。
 デリバリーサービスを開始した大手チェーン店もあるが、個人経営のお店の多くはITの利用にも疎く、まだまだオンラインでのサービス展開はおこなえていない。
+（参考文献入れる）
 
 The Japanese government requires people to avoid sealed/crowd/closed situations continuously and to manage to stay home during the weekend.
 This requirement makes us harder to go to restaurant and eat something in there.
