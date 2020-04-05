@@ -22,6 +22,15 @@
 
 BenToGo は、混雑・感染リスクを避けつつプロの料理を楽しみたいニーズと、オンラインチャネルがなく、経営に苦しんでいる飲食店とのマッチングをおこなう。
 
+### Overview of the service
+- Owner of restaurant can create a new site via the application form
+- We will get a notification when a new application is created
+- We create a new site with our theme on Shopify platform and delegate it to the owner
+- The site has the following features by default
+  + add/delete items
+  + pre-order
+  + congestion map
+  + analytics
 
 
 ## Front end
