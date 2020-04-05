@@ -71,10 +71,9 @@
         {% if settings.show_breadcrumb_nav and request.page_type != 'index' %}
           {% include 'breadcrumb-nav' %}
         {% endif %}
-        {{ content_for_layout }}
-        
-        <div id="chartdiv" style="width: 500px;height: 200px;">aa</div>
-		<script defer src="https://hackorona.s3-ap-northeast-1.amazonaws.com/widget/main.js"></script>
+        {{ content_for_layout }}      
+  
+        {% include 'bentogo-widget' %}
       </main>
 
     </div>
