@@ -21,7 +21,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "@amcharts/amcharts4": "^4.9.12",
+    "@amcharts/amcharts4": "^4.10.28",
     "axios": "^0.19.2",
     "moment": "^2.24.0"
   }
